@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>慕名而来 · 欧韩饰品店</title>
+<style>
+/* 所有样式和脚本都在本文件内，照片通过同文件夹中的文件名引用。 */
+:root{--paper:#f8f5ef;--card:#fffdf9;--ink:#454438;--muted:#939080;--gold:#a98b59;--line:#e8e2d6;--green:#727b65}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:14px Arial,"Microsoft YaHei",sans-serif}
+button,input{font:inherit}
+button{cursor:pointer;color:inherit}
+button:disabled{opacity:.4;cursor:default}
+button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+[hidden]{display:none!important}
+header{height:86px;padding:0 30px;display:flex;align-items:center;gap:28px;border-bottom:1px solid var(--line);background:#fffdf9}
+.brand{flex:1;min-width:0}
+.brand h1{margin:0;font-size:21px;font-weight:500;letter-spacing:2px}
+.brand small{display:block;font-size:9px;letter-spacing:3px;margin-top:8px;color:var(--muted)}
+.mode-switch{display:flex;background:#efece4;padding:4px;border-radius:28px}
+.mode-switch button{background:none;border:0;border-radius:24px;padding:11px 20px;font-size:12px;white-space:nowrap}
+.mode-switch button[aria-pressed="true"]{background:#fffdf9;box-shadow:0 2px 8px #55462610;color:#826b42}
+.header-actions{display:flex;gap:9px}
+.outline,.primary{padding:10px 14px;border:1px solid #d7ccb8;border-radius:7px;background:transparent;font-size:11px;white-space:nowrap}
+.primary{background:#858c74;border-color:#858c74;color:white}
+.layout{display:grid;grid-template-columns:240px minmax(0,1fr);height:calc(100dvh - 86px);min-height:690px}
+.sidebar{padding:30px 24px;border-right:1px solid var(--line);overflow-y:auto;scrollbar-width:thin}
+.kicker{font-size:9px;color:var(--gold);letter-spacing:2px}
+.sidebar h2{font-weight:400;font-size:19px;letter-spacing:2px;margin:12px 0 8px}
+.muted{color:var(--muted);font-size:11px;line-height:1.8}
+.stat{padding:22px 0;border-bottom:1px solid var(--line)}
+.stat label{font-size:11px;color:#8d8d7e}
+.stat strong{display:block;font:35px Georgia,serif;margin-top:10px;font-weight:400;overflow-wrap:anywhere}
+.stat.money strong{font-size:27px;color:#947c50}
+.stat small{display:block;font-size:9px;color:#a09b8c;margin-top:8px;line-height:1.6}
+.ranking{margin-top:25px}
+.ranking h3{font-size:12px;font-weight:400}
+.ranking ol{padding:0;margin:14px 0;list-style:none}
+.rank-item{display:flex;width:100%;gap:8px;padding:12px 0;border:0;border-bottom:1px solid var(--line);background:none;text-align:left;align-items:center}
+.rank-item em{font:15px Georgia,serif;color:var(--gold)}
+.rank-item span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}
+.rank-item small{font-size:9px;color:#969582}
+#status{font-size:10px;line-height:1.8;overflow-wrap:anywhere;color:#7c856a;margin-top:20px}
+#status.error{color:#ad644e}
+.workspace{min-width:0;min-height:0;display:flex;flex-direction:column}
+.intro{padding:26px 30px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.intro h2{font-size:25px;font-weight:400;letter-spacing:2px;margin:10px 0 8px}
+.intro p{font-size:11px;margin:0;color:var(--muted)}
+.view{min-height:0;flex:1;display:flex;flex-direction:column}
+.tour-bar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:0 30px 12px}
+.tour-bar .location{margin-right:auto;font-size:11px;color:var(--green)}
+.tour-bar button{min-height:40px}
+.tour-status{min-height:22px;margin:0 30px 7px;color:#8a7250;font-size:11px;line-height:1.7}
+.photo-area{position:relative;flex:1;min-height:360px;overflow:hidden;background:#e9e6df;margin:0 30px;border-radius:10px}
+.photo-area:before{content:"MUMING ERLAI";position:absolute;left:22px;top:22px;writing-mode:vertical-rl;letter-spacing:4px;font:11px Georgia,serif;color:#aaa38f}
+.photo-sheet{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);box-shadow:0 0 50px #675b4120}
+#scene-photo{display:block;width:100%;height:100%}
+#hotspots{position:absolute;inset:0}
+.photo-area[aria-busy="true"] #hotspots{pointer-events:none;opacity:.3}
+.doorway{position:absolute;left:78%;top:85%;transform:translate(-50%,-50%);padding:11px 13px;border:1px solid #f6ead0;border-radius:24px;background:#6d775de8;color:white;box-shadow:0 4px 22px #28281f55;white-space:nowrap;font-size:12px;min-height:44px}
+.doorway:hover{background:#59684f}
+.hotspot{position:absolute;transform:translate(-50%,-50%);border:0;padding:0;width:27px;height:27px;border-radius:50%;background:#fffcf1ef;color:#79633f;box-shadow:0 0 0 5px #fff6d64d,0 3px 12px #3b322e40;font:11px Georgia,serif}
+.hotspot:hover,.hotspot:focus-visible{background:#b09461;color:white;box-shadow:0 0 0 7px #e2cd9b66}
+.hotspot.unbound{background:#eee8dc;border:1px dashed #9b8c71}
+.hotspot .tip{display:none;position:absolute;left:36px;top:50%;transform:translateY(-50%);padding:9px 12px;border-radius:6px;white-space:nowrap;background:#fffdf5;box-shadow:0 4px 15px #463c2526;color:#65583e;font:11px Arial,"Microsoft YaHei",sans-serif;pointer-events:none;z-index:3}
+.hotspot.left .tip{left:auto;right:36px}
+.hotspot:hover .tip,.hotspot:focus-visible .tip{display:block}
+.photo-error{position:absolute;inset:0;display:grid;place-content:center;text-align:center;padding:30px;background:#ebe7de;color:#897b62;font-size:12px;line-height:1.9}
+.scene-navigation{display:flex;align-items:center;gap:18px;padding:18px 30px}
+.scene-info{font-size:11px;line-height:1.8;min-width:94px}
+.scene-info small{display:block;color:var(--muted);font-size:9px}
+.thumbnails{display:flex;gap:10px;overflow-x:auto;padding:3px;scrollbar-width:thin}
+.thumbnail{flex-shrink:0;width:100px;height:67px;border:1px solid transparent;border-radius:6px;overflow:hidden;padding:0;position:relative;background:#d8d2c5}
+.thumbnail img{width:100%;height:100%;object-fit:cover;object-position:center 65%;display:block;opacity:.72}
+.thumbnail span{position:absolute;bottom:0;left:0;right:0;font-size:9px;color:#fff;padding:12px 3px 6px;background:linear-gradient(transparent,#29291dbb)}
+.thumbnail[aria-pressed="true"]{border-color:#ac8e58;box-shadow:0 0 0 2px #d7c6a8}
+.thumbnail[aria-pressed="true"] img{opacity:1}
+.caption{font-size:10px;color:#9c9788;text-align:center;padding:0 18px 15px;line-height:1.8}
+.gallery-stage{position:relative;flex:1;min-height:390px;overflow:hidden;margin:0 30px;background:radial-gradient(ellipse at 50% 48%,#f9f3e4,#ddd5c6);border-radius:10px;touch-action:none;cursor:grab;isolation:isolate}
+.gallery-stage:active{cursor:grabbing}
+.gallery-stage.is-dragging .product-card{pointer-events:none}
+.gallery-stage>div:first-child{position:absolute;inset:0}
+.gallery-camera{perspective-origin:50% 50%;overflow:hidden;pointer-events:none}
+.gallery-world{position:absolute;left:50%;top:50%;width:0;height:0;transform-origin:0 0;transform-style:preserve-3d}
+.room-panel,.card-object{position:absolute;left:0;top:0;transform-style:preserve-3d}
+.room-panel{pointer-events:none}
+.card-object{pointer-events:auto}
+.room-floor{background:repeating-linear-gradient(0deg,transparent 0 119px,#b7ac9438 120px 122px),repeating-linear-gradient(90deg,#e5dece 0 119px,#c9bea748 120px 122px)}
+.room-wall{background:linear-gradient(#f5f0e6 0%,#e8e0d0 70%,#c4b49a);border:2px solid #cabea6;display:flex;align-items:center;justify-content:center;color:#a18a61;font:52px Georgia,serif;letter-spacing:18px}
+.room-side{background:repeating-linear-gradient(90deg,#eae3d5 0 119px,#ded3bd 120px 123px)}
+.card-object{width:250px;height:338px}
+.product-card{width:100%;height:100%;padding:0;border:1px solid #d1c3a9;border-radius:12px;overflow:hidden;text-align:left;background:#fffaf0;box-shadow:0 20px 34px #6b573333;backface-visibility:hidden;transition:transform .2s,box-shadow .2s}
+.product-card:hover,.product-card:focus-visible{transform:translateY(-8px);box-shadow:0 24px 44px #6b57334d}
+.product-photo{position:relative;overflow:hidden;width:100%;height:235px;background:#eee8dc}
+.product-photo img{position:absolute;display:block;max-width:none}
+.product-photo.full img{inset:0;width:100%;height:100%;object-fit:contain}
+.product-photo .missing{position:absolute;inset:0;display:grid;place-content:center;color:#94866a;font-size:11px}
+.product-meta{padding:14px 16px}
+.product-meta h3{font-size:14px;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0 0 12px}
+.product-bottom{display:flex;justify-content:space-between;gap:5px;align-items:center}
+.product-bottom strong{font:21px Georgia,serif;color:#9e8051}
+.product-bottom small{font-size:9px;color:#9c927e}
+.card-tag{position:absolute;top:10px;left:10px;padding:5px 7px;background:#fffcf1e6;border:1px solid #e3d4b7;border-radius:4px;font-size:9px;color:#947548}
+.gallery-ui{position:absolute;inset:0;pointer-events:none;z-index:5}
+.dpad{position:absolute;bottom:18px;left:18px;display:grid;grid-template-columns:34px 34px 34px;grid-template-rows:34px 34px;gap:4px;pointer-events:auto}
+.dpad button{background:#fffcf0df;border:1px solid #cbbd9f;border-radius:5px;touch-action:none;user-select:none}
+.dpad button:active{background:#b79b69;color:white}
+.dpad [data-key="w"]{grid-column:2}
+.dpad [data-key="a"]{grid-row:2}
+.dpad [data-key="s"]{grid-row:2;grid-column:2}
+.dpad [data-key="d"]{grid-row:2;grid-column:3}
+.walk-help{position:absolute;bottom:20px;right:18px;font-size:10px;line-height:1.9;color:#6f624c;text-align:right}
+.walk-help button{pointer-events:auto;margin-top:6px}
+.gallery-message{position:absolute;inset:0;display:grid;place-content:center;text-align:center;font-size:12px;color:#867555;background:#f5eee0e8;padding:24px;line-height:1.9}
+.group-nav{display:flex;justify-content:center;align-items:center;gap:16px;padding:18px 20px 12px}
+.group-nav button{background:#fffaf0;border:1px solid #d6c9b1;border-radius:50%;width:33px;height:33px}
+#group-label{font-size:11px;min-width:160px;text-align:center;color:#8d7e63}
+dialog{padding:0;width:min(700px,calc(100vw - 28px));max-height:90dvh;overflow:auto;border:1px solid #e0d6c3;border-radius:15px;background:#fffdf8;color:var(--ink);box-shadow:0 30px 100px #40321f40}
+dialog::backdrop{background:#292a247a;backdrop-filter:blur(5px)}
+.close-dialog{position:absolute;right:12px;top:12px;border:1px solid #b9ad9777;background:#fffdf3ed;width:30px;height:30px;border-radius:50%;font-size:19px;z-index:3}
+.detail-grid{display:grid;grid-template-columns:46% 54%}
+.detail-image{background:#eee8dc;display:flex;align-items:center;min-width:0}
+.detail-image .product-photo{height:100%;min-height:350px}
+.detail-content{padding:38px 27px 25px;min-width:0;overflow-wrap:anywhere}
+.detail-content h2{font-size:22px;font-weight:400;margin:15px 0 10px}
+.detail-price{font:31px Georgia,serif;color:#9f8050;margin:21px 0 15px}
+.detail-description{color:#92907f;font-size:12px;line-height:1.9}
+.detail-stats{display:flex;gap:36px;margin:23px 0;border-top:1px solid var(--line);padding-top:18px}
+.detail-stats dt{font-size:10px;color:var(--muted)}
+.detail-stats dd{font:24px Georgia,serif;margin:8px 0 0}
+.help-content{padding:30px;font-size:12px;line-height:1.9;color:#777566}
+.help-content h2{font-size:22px;font-weight:400;color:#49483b}
+.help-content pre{padding:16px;background:#f2eee5;border-radius:8px;overflow:auto;font-size:11px}
+.mobile-stat{display:none}
+.tour-bar .outline,.tour-bar .primary{font-size:11px}
+@media(max-width:760px){
+  .tour-bar{margin:0 15px 8px;gap:6px}
+  .tour-bar .location{flex-basis:100%;margin-bottom:2px}
+  .tour-bar button{padding:8px 10px}
+  .tour-status{margin:0 15px 7px}
+  .doorway{font-size:11px;padding:9px}
+  .thumbnails{justify-content:flex-start!important}
+  .thumbnail{width:85px!important}
+}
+@media(max-width:1100px){
+  header{padding:0 20px;gap:14px}
+  .brand h1{font-size:18px}
+  .brand small{font-size:8px;letter-spacing:2px}
+  .mode-switch button{padding:10px 12px}
+  .layout{grid-template-columns:210px minmax(0,1fr)}
+  .sidebar{padding:25px 20px}
+  .intro{padding:24px}
+  .photo-area,.gallery-stage{margin:0 24px}
+  .scene-navigation{padding:16px 24px;gap:12px}
+  .scene-info{display:none}
+}
+@media(max-width:760px){
+  header{height:auto;min-height:122px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:16px}
+  .brand{grid-column:1;grid-row:1}
+  .brand h1{font-size:16px;letter-spacing:1px;white-space:nowrap}
+  .brand small{font-size:7px;letter-spacing:1px}
+  .header-actions{grid-column:2;grid-row:1}
+  .header-actions .outline{display:none}
+  .mode-switch{grid-column:1;grid-row:2}
+  .mode-switch button{flex:1;padding:9px 8px;font-size:11px}
+  .mobile-stat{display:block;grid-column:2;grid-row:2}
+  .layout{display:flex;flex-direction:column;height:auto;min-height:0}
+  .sidebar{display:none;border-right:0;border-bottom:1px solid var(--line);padding:18px}
+  .layout.show-stats .sidebar{display:block}
+  .sidebar-head{display:none}
+  .stats{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:14px}
+  .stat{padding:5px 0 15px;min-width:0}
+  .stat strong{font-size:26px}
+  .stat.money strong{font-size:21px}
+  .stat small{font-size:8px}
+  .ranking{margin-top:15px}
+  .ranking ol{display:flex;gap:12px;overflow:auto}
+  .ranking li{min-width:165px}
+  .rank-item{padding:10px 0}
+  .intro{padding:23px 18px 18px}
+  .intro h2{font-size:22px}
+  .intro .outline{padding:8px}
+  .intro p{font-size:10px}
+  .photo-area,.gallery-stage{margin:0 15px;flex:none;height:62dvh;min-height:430px}
+  .photo-area:before{display:none}
+  .scene-navigation{padding:15px;gap:0}
+  .thumbnails{width:100%;justify-content:space-between;gap:7px}
+  .thumbnail{width:calc((100vw - 65px)/4);height:60px}
+  .caption{font-size:9px;padding-bottom:18px}
+  .gallery-stage{height:65dvh;min-height:450px}
+  .hotspot{width:25px;height:25px;font-size:10px}
+  .hotspot .tip{display:none!important}
+  .detail-grid{grid-template-columns:1fr}
+  .detail-image{height:260px}
+  .detail-image .product-photo{height:260px;min-height:0}
+  .detail-content{padding:24px}
+  .detail-stats{margin-bottom:15px}
+  .help-content{padding:26px 22px}
+  .walk-help{font-size:9px;max-width:160px}
+  .dpad{grid-template-columns:38px 38px 38px;grid-template-rows:38px 38px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{transition:none!important}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <h1>慕名而来 · 欧韩饰品店</h1>
+    <small>JEWELRY & LITTLE THINGS · EVERYDAY BEAUTY</small>
+  </div>
+
+  <nav class="mode-switch" aria-label="浏览模式">
+    <button id="photo-mode" aria-pressed="true">实景逛店</button>
+    <button id="gallery-mode" aria-pressed="false">3D 商品展厅</button>
+  </nav>
+
+  <div class="header-actions">
+    <button class="primary" id="import-button">↑ 导入 JSON</button>
+    <button class="outline" id="help-button">使用说明</button>
+  </div>
+
+  <button class="outline mobile-stat" id="stats-button" aria-expanded="false">
+    销售统计
+  </button>
+  <input id="json-file" type="file" accept=".json,application/json" hidden>
+</header>
+
+<div class="layout" id="layout">
+  <aside class="sidebar" aria-label="销售统计">
+    <div class="sidebar-head">
+      <div class="kicker">STORE OVERVIEW</div>
+      <h2>每一份心动，都有记录</h2>
+      <p class="muted">把平凡的日子，戴成喜欢的样子。</p>
+    </div>
+
+    <div class="stats">
+      <section class="stat">
+        <label>总商品数</label>
+        <strong id="total-products">—</strong>
+        <small>当前商品库 · 款</small>
+      </section>
+      <section class="stat money">
+        <label>总销售额</label>
+        <strong id="total-revenue">—</strong>
+        <small>估算口径：售价 × 累计销量</small>
+      </section>
+      <section class="stat">
+        <label>累计售出</label>
+        <strong id="total-sales">—</strong>
+        <small>全部商品 · 件</small>
+      </section>
+    </div>
+
+    <section class="ranking">
+      <h3>热销商品 TOP 5</h3>
+      <ol id="ranking"></ol>
+    </section>
+
+    <div id="status" role="status" aria-live="polite">
+      当前为示例商品资料，价格与库存请以门店实际信息为准。
+    </div>
+  </aside>
+
+  <main class="workspace">
+    <div class="intro">
+      <div>
+        <div class="kicker" id="view-kicker">A LITTLE SHOP, A LOT OF LOVE</div>
+        <h2 id="view-title">走进店里，遇见心动。</h2>
+        <p id="view-description">七个实拍视角 · 从门口走进来，发现喜欢的饰品</p>
+      </div>
+      <button class="outline" id="intro-help">操作说明</button>
+    </div>
+
+    <!-- 实景模式：外部照片与热点共用同一个等比例容器。 -->
+    <section class="view" id="photo-view" aria-label="店铺实景">
+      <nav class="tour-bar" aria-label="店铺路线">
+        <span class="location" id="tour-location">门店外 · 欢迎光临</span>
+        <button class="primary" id="enter-shop">进入店铺 →</button>
+        <button class="outline" id="exit-shop" hidden>← 返回门外</button>
+        <button class="outline" id="tour-next" hidden>继续逛店 →</button>
+        <button class="outline" id="enter-gallery">进入 3D 展厅</button>
+      </nav>
+
+      <div class="tour-status" id="tour-status" role="status" aria-live="polite"></div>
+
+      <div class="photo-area" id="photo-area" aria-busy="false">
+        <div class="photo-sheet" id="photo-sheet">
+          <img id="scene-photo" alt="">
+          <div id="hotspots"></div>
+          <button class="doorway" id="doorway" hidden
+                  aria-label="从门口走进店内全景">进入店铺 ↗</button>
+        </div>
+        <div class="photo-error" id="photo-error" hidden></div>
+      </div>
+
+      <div class="scene-navigation">
+        <div class="scene-info">
+          <span id="scene-name"></span>
+          <small id="scene-count"></small>
+        </div>
+        <nav class="thumbnails" id="thumbnails" aria-label="切换店铺照片"></nav>
+      </div>
+
+      <div class="caption">
+        7 张店铺实拍 · 15 个商品热点 · 点击门口进入，底部缩略图可左右滑动
+      </div>
+    </section>
+
+    <!-- 3D 模式：原生 CSS 3D 场景，无第三方依赖。 -->
+    <section class="view" id="gallery-view" aria-label="3D 商品展厅" hidden>
+      <nav class="tour-bar" aria-label="展厅路线">
+        <span class="location">3D 展厅 · 自由漫游</span>
+        <button class="outline" id="back-to-store">← 返回实景店内</button>
+      </nav>
+
+      <div class="gallery-stage" id="gallery-stage" tabindex="0"
+           aria-label="拖拽旋转视角，WASD 漫游">
+        <div id="renderer-host"></div>
+
+        <div class="gallery-ui">
+          <div class="dpad" aria-label="触屏移动">
+            <button data-key="w" aria-label="前进">↑</button>
+            <button data-key="a" aria-label="左移">←</button>
+            <button data-key="s" aria-label="后退">↓</button>
+            <button data-key="d" aria-label="右移">→</button>
+          </div>
+          <div class="walk-help">
+            拖拽旋转视角 · WASD 漫游<br>
+            手机长按方向键移动<br>
+            <button class="outline" id="reset-camera">↺ 重置视角</button>
+          </div>
+        </div>
+
+        <div class="gallery-message" id="gallery-message" role="status">
+          正在准备 3D 展厅…
+        </div>
+      </div>
+
+      <nav class="group-nav" aria-label="商品分组">
+        <button id="previous-group" aria-label="上一组">←</button>
+        <span id="group-label">—</span>
+        <button id="next-group" aria-label="下一组">→</button>
+      </nav>
+
+      <div class="caption">
+        按累计销量降序陈列 · 热销商品优先位于中间前排 · 每组最多 6 款
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- 商品详情：两个浏览模式共用。 -->
+<dialog id="detail-dialog" aria-labelledby="detail-name">
+  <button class="close-dialog" id="close-detail"
+          aria-label="关闭商品详情" autofocus>×</button>
+  <div class="detail-grid">
+    <div class="detail-image" id="detail-image"></div>
+    <div class="detail-content">
+      <div class="kicker" id="detail-category"></div>
+      <h2 id="detail-name"></h2>
+      <div class="muted" id="detail-id"></div>
+      <div class="detail-price" id="detail-price"></div>
+      <div class="detail-description" id="detail-description"></div>
+      <dl class="detail-stats">
+        <div><dt>当前库存</dt><dd id="detail-stock"></dd></div>
+        <div><dt>累计销量</dt><dd id="detail-sales"></dd></div>
+      </dl>
+      <p class="muted" id="detail-note"></p>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="help-dialog" aria-labelledby="help-title">
+  <button class="close-dialog" id="close-help"
+          aria-label="关闭使用说明" autofocus>×</button>
+  <div class="help-content">
+    <h2 id="help-title">欢迎来逛，慢慢挑选。</h2>
+
+    <p>实景模式：在门头点击「进入店铺」，视角推进后进入店内全景；点击「继续逛店」游览店内视点，「返回门外」回到门头。也可以点击底部缩略图切换 7 张照片，点击数字光点查看商品。</p>
+    <p>3D 模式：按住鼠标拖动旋转视角，W 前进、S 后退、A 左移、D 右移。手机拖动看向，长按方向键移动。「重置视角」返回当前商品组入口。</p>
+    <p>图片与 index.html 放在同一文件夹，无需本地服务器。实景图为普通实拍照片；自由漫游位于独立的 3D 商品展厅。</p>
+    <p>导入 JSON 可替换当前商品库，统计和热销排名自动更新。支持数组或包含 products 数组的对象：</p>
+
+    <pre>{
+  "products": [
+    {
+      "id": "MM-01",
+      "name": "珍珠叠戴项链",
+      "category": "项链",
+      "price": 168,
+      "stock": 12,
+      "sales": 32,
+      "image": "necklace.jpg",
+      "description": "温柔珠光，适合日常搭配。"
+    }
+  ]
+}</pre>
+
+    <p>必填：id、name、price、stock、sales。价格为非负数字，最多两位小数；库存和销量为非负整数。category、description（也可用 desc）、image 可省略。</p>
+    <p>商品编号 MM-01 至 MM-15 对应固定的 15 个实景热点。保留编号即可更新该热点；导入文件未包含的编号会显示「商品未关联」，不会误用其他商品。新增编号仍可在 3D 展厅浏览。</p>
+    <p>image 填同文件夹中的图片文件名，也支持 HTTP/HTTPS 图片地址。省略时，已知编号沿用实拍陈列裁切视图；其他商品显示陈列参考图。本页不使用内嵌编码图片。</p>
+    <p>文件仅由浏览器读取，刷新恢复示例资料。单文件最多 5 MB、1,000 款商品。空数组可清空商品库。导入失败时保留当前数据。</p>
+    <p>展厅使用原生 CSS 3D 与 JavaScript，无需安装依赖或加载 CDN。所有店铺照片均为本地外部文件。初始名称、价格、库存、销量和新增视点的热点位置为示例，请根据实际商品核对。</p>
+  </div>
+</dialog>
+
+<script>
+'use strict';
+
+// 01. 七张照片均是外部文件，与 index.html 放在同一文件夹。
+const FILES = {
+  front: '366cb68653414f3518075b915d5a0c38.jpg',
+  window: '3b46adcd736a445fac1c7dc0baf09fa4.jpg',
+  earrings: '0b264fee9806c05598e9d1b6dd86eb95.jpg',
+  inside: '82eeb3e3247d5df8d71f0d7b467baace.jpg',
+  view5: '微信图片_20261005223717_57_1.jpg',
+  view6: '微信图片_20261005223718_58_1.jpg',
+  view7: '微信图片_20261005223719_59_1.jpg'
+};
+
+// 热点坐标为图片上的百分比，与图片一起缩放。
+// 每项格式：[商品编号, 横向百分比, 纵向百分比]。
+// 7 张照片共 15 个商品热点，进店按钮不计入商品热点。
+const SCENES = [
+  {
+    name: '门店门头',
+    file: FILES.front,
+    ratio: 1344 / 1825,
+    spots: [
+      ['MM-01', 28.5, 66.6],
+      ['MM-02', 51.6, 67.5]
+    ]
+  },
+  {
+    name: '橱窗特写',
+    file: FILES.window,
+    ratio: 1279 / 1706,
+    spots: [
+      ['MM-04', 27.8, 64.0],
+      ['MM-05', 70.3, 66.1]
+    ]
+  },
+  {
+    name: '耳饰墙',
+    file: FILES.earrings,
+    ratio: 1279 / 1706,
+    spots: [
+      ['MM-08', 74.7, 30.4],
+      ['MM-09', 82.7, 49.2],
+      ['MM-10', 26.0, 51.6]
+    ]
+  },
+  {
+    name: '店内全景',
+    file: FILES.inside,
+    ratio: 1279 / 1706,
+    spots: [
+      ['MM-13', 29.5, 73.7],
+      ['MM-14', 19.2, 81.7]
+    ]
+  },
+
+  // 新增三个视点的热点为示例坐标，可按实际货架调整。
+  {
+    name: '店内视点 05',
+    file: FILES.view5,
+    ratio: 3 / 4,
+    spots: [
+      ['MM-03', 34, 55],
+      ['MM-06', 67, 65]
+    ]
+  },
+  {
+    name: '店内视点 06',
+    file: FILES.view6,
+    ratio: 3 / 4,
+    spots: [
+      ['MM-07', 30, 48],
+      ['MM-11', 68, 60]
+    ]
+  },
+  {
+    name: '店内视点 07',
+    file: FILES.view7,
+    ratio: 3 / 4,
+    spots: [
+      ['MM-12', 35, 62],
+      ['MM-15', 72, 52]
+    ]
+  }
+];
+
+// 商品图片直接引用实拍文件。
+// crop=[左,上,宽,高] 为归一化裁切范围，纯 CSS 显示，不生成图片文件。
+// 导入独立商品图片时，填写 image 文件名即可。
+const DEMO = [
+  {
+    id: 'MM-01',
+    name: '晨光 · 珍珠叠戴项链',
+    category: '项链',
+    price: 168,
+    stock: 12,
+    sales: 68,
+    image: FILES.front,
+    crop: [.255, .634, .072, .064],
+    desc: '橱窗中的温柔珠光，适合衬衫与日常针织搭配。'
+  },
+  {
+    id: 'MM-02',
+    name: '凝翠 · 彩珠项链',
+    category: '项链',
+    price: 198,
+    stock: 8,
+    sales: 45,
+    image: FILES.front,
+    crop: [.487, .651, .067, .052],
+    desc: '彩色珠饰与简洁轮廓，为日常穿搭添一点色彩。'
+  },
+  {
+    id: 'MM-03',
+    name: '月白 · 双层珠链',
+    category: '项链',
+    price: 158,
+    stock: 16,
+    sales: 82,
+    image: FILES.front,
+    crop: [.61, .651, .05, .045],
+    desc: '双层珠光轻轻叠落，柔和、精致，也容易搭配。'
+  },
+  {
+    id: 'MM-04',
+    name: '初见 · 长款珍珠项链',
+    category: '项链',
+    price: 188,
+    stock: 10,
+    sales: 56,
+    image: FILES.window,
+    crop: [.238, .61, .085, .09],
+    desc: '橱窗精选的长款珠链，给简单衣着增添层次。'
+  },
+  {
+    id: 'MM-05',
+    name: '森语 · 复古彩珠链',
+    category: '项链',
+    price: 218,
+    stock: 7,
+    sales: 39,
+    image: FILES.window,
+    crop: [.646, .624, .115, .089],
+    desc: '木框中珍藏的一抹色彩，适合复古与自然风格。'
+  },
+  {
+    id: 'MM-06',
+    name: '莓果 · 红色珠链',
+    category: '项链',
+    price: 138,
+    stock: 20,
+    sales: 96,
+    image: FILES.window,
+    crop: [.861, .602, .058, .056],
+    desc: '饱满的红色珠饰，点亮素色上衣与温柔妆容。'
+  },
+  {
+    id: 'MM-07',
+    name: '流光 · 白色珠链',
+    category: '项链',
+    price: 178,
+    stock: 11,
+    sales: 73,
+    image: FILES.window,
+    crop: [.927, .601, .069, .067],
+    desc: '柔和珠光与简洁线条，适合日常和轻礼服搭配。'
+  },
+  {
+    id: 'MM-08',
+    name: '暖杏 · 圆形耳饰',
+    category: '耳饰',
+    price: 59,
+    stock: 28,
+    sales: 128,
+    image: FILES.earrings,
+    crop: [.711, .287, .073, .04],
+    desc: '暖杏色的圆润轮廓，轻松搭出温柔日常。'
+  },
+  {
+    id: 'MM-09',
+    name: '微光 · 珠光耳坠',
+    category: '耳饰',
+    price: 79,
+    stock: 18,
+    sales: 112,
+    image: FILES.earrings,
+    crop: [.787, .467, .08, .046],
+    desc: '细小珠光自然垂落，随动作轻轻闪耀。'
+  },
+  {
+    id: 'MM-10',
+    name: '弦月 · 简约圈形耳环',
+    category: '耳饰',
+    price: 69,
+    stock: 24,
+    sales: 105,
+    image: FILES.earrings,
+    crop: [.223, .489, .07, .055],
+    desc: '简约圆环勾勒清爽轮廓，适合通勤穿搭。'
+  },
+  {
+    id: 'MM-11',
+    name: '金砂 · 细圈耳饰',
+    category: '耳饰',
+    price: 89,
+    stock: 15,
+    sales: 91,
+    image: FILES.earrings,
+    crop: [.418, .526, .095, .053],
+    desc: '柔和金色与纤细弧线，为脸庞添一点光。'
+  },
+  {
+    id: 'MM-12',
+    name: '樱语 · 粉色串珠手链',
+    category: '手链',
+    price: 88,
+    stock: 22,
+    sales: 120,
+    image: FILES.earrings,
+    crop: [.526, .805, .099, .047],
+    desc: '浅粉串珠温柔细腻，适合单戴或叠搭。'
+  },
+  {
+    id: 'MM-13',
+    name: '朱砂红 · 双层珠链',
+    category: '项链',
+    price: 158,
+    stock: 9,
+    sales: 62,
+    image: FILES.inside,
+    crop: [.252, .696, .084, .105],
+    desc: '中岛陈列中的红色双层项链，醒目而柔和。'
+  },
+  {
+    id: 'MM-14',
+    name: '夜色 · 黑色串珠手链',
+    category: '手链',
+    price: 98,
+    stock: 17,
+    sales: 77,
+    image: FILES.inside,
+    crop: [.155, .797, .076, .035],
+    desc: '深色珠饰搭配圆润光泽，简洁又耐看。'
+  },
+  {
+    id: 'MM-15',
+    name: '日常 · 手链精选',
+    category: '手链',
+    price: 68,
+    stock: 31,
+    sales: 88,
+    image: FILES.inside,
+    crop: [.912, .596, .085, .062],
+    desc: '右侧柜台的日常手链陈列，找到属于你的细节。'
+  }
+];
+
+const $ = id => document.getElementById(id);
+
+const el = (tag, className, text) => {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined) node.textContent = text;
+  return node;
+};
+
+const money = value =>
+  '¥ ' + value.toLocaleString('zh-CN', { maximumFractionDigits: 2 });
+
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+const detail = $('detail-dialog');
+const help = $('help-dialog');
+
+let products = [];
+let ranked = [];
+let productMap = new Map();
+let sceneIndex = 0;
+let mode = 'photo';
+let gallery = null;
+let source = '内置示例';
+let importing = false;
+let photoToken = 0;
+let photoBusy = false;
+let photoReady = false;
+let photoAnimation = null;
+
+// 02. 图片通过普通 img 加载，兼容本地 file://。
+// 不使用纹理读取、图片编码或本地文件系统写入。
+function picture(product) {
+  const box = el('div', 'product-photo' + (product.crop ? '' : ' full'));
+  const img = el('img');
+
+  img.alt = product.name + ' · ' +
+    (product.crop ? '实拍陈列局部' : '商品图片');
+  img.draggable = false;
+  img.loading = 'lazy';
+
+  if (product.crop) {
+    const [x, y, w, h] = product.crop;
+    Object.assign(img.style, {
+      width: 100 / w + '%',
+      height: 100 / h + '%',
+      left: -x / w * 100 + '%',
+      top: -y / h * 100 + '%'
+    });
+  }
+
+  img.onerror = () => {
+    img.hidden = true;
+    box.append(el('span', 'missing', '图片暂不可用，请检查文件名'));
+  };
+
+  img.src = product.image;
+  box.append(img);
+  return box;
+}
+
+function showDetail(product) {
+  $('detail-image').replaceChildren(picture(product));
+  $('detail-category').textContent = product.category + ' / COLLECTION';
+  $('detail-name').textContent = product.name;
+  $('detail-id').textContent = 'NO. ' + product.id;
+  $('detail-price').textContent = money(product.price);
+  $('detail-description').textContent = product.desc;
+  $('detail-stock').textContent = product.stock + ' 件';
+  $('detail-sales').textContent = product.sales + ' 件';
+
+  $('detail-note').textContent =
+    (source === '内置示例'
+      ? '示例资料，价格及库存待门店确认。 '
+      : '数据来源：' + source + '。 ') +
+    (product.crop ? '图片为店内实拍陈列局部。' : '');
+
+  detail.showModal();
+}
+
+$('close-detail').onclick = () => detail.close();
+$('close-help').onclick = () => help.close();
+$('help-button').onclick = $('intro-help').onclick = () => help.showModal();
+
+// 原生 dialog 支持 Escape 关闭；这里补充点击遮罩关闭。
+[detail, help].forEach(dialog => {
+  dialog.addEventListener('click', event => {
+    if (event.target !== dialog) return;
+    const r = dialog.getBoundingClientRect();
+
+    if (
+      event.clientX < r.left || event.clientX > r.right ||
+      event.clientY < r.top || event.clientY > r.bottom
+    ) {
+      dialog.close();
+    }
+  });
+});
+
+// 03. 七个实景视点与进店过渡。
+// 热点和照片共用相同尺寸的容器，窗口缩放时保持位置对应。
+function fitPhoto() {
+  const area = $('photo-area');
+  const scene = SCENES[sceneIndex];
+
+  if (!area.clientWidth || !area.clientHeight) return;
+
+  const img = $('scene-photo');
+  const ratio = img.naturalWidth
+    ? img.naturalWidth / img.naturalHeight
+    : scene.ratio;
+
+  const width = Math.min(area.clientWidth, area.clientHeight * ratio);
+  $('photo-sheet').style.width = width + 'px';
+  $('photo-sheet').style.height = width / ratio + 'px';
+}
+
+function drawHotspots() {
+  $('hotspots').replaceChildren();
+
+  SCENES[sceneIndex].spots.forEach(([id, x, y]) => {
+    const product = productMap.get(id);
+    const button = el(
+      'button',
+      'hotspot' + (x > 60 ? ' left' : '') + (product ? '' : ' unbound'),
+      id.slice(-2)
+    );
+
+    button.type = 'button';
+    button.style.left = x + '%';
+    button.style.top = y + '%';
+
+    const label = product
+      ? product.name + ' · ' + money(product.price)
+      : id + ' · 商品未关联';
+
+    button.setAttribute('aria-label', label);
+    button.title = label;
+    button.append(el('span', 'tip', label));
+
+    button.onclick = () => {
+      if (product) {
+        showDetail(product);
+      } else {
+        setStatus(
+          '此热点关联 ' + id +
+          '，当前商品库未包含该编号。导入相同 id 即可更新该位置。',
+          true
+        );
+        $('layout').classList.add('show-stats');
+        $('stats-button').setAttribute('aria-expanded', 'true');
+      }
+    };
+
+    $('hotspots').append(button);
+  });
+
+  updateTour();
+}
+
+function updateTour() {
+  const outside = sceneIndex < 2;
+
+  $('tour-location').textContent =
+    (outside ? '门店外' : '店内') + ' · ' + SCENES[sceneIndex].name;
+
+  $('enter-shop').hidden = !outside;
+  $('exit-shop').hidden = $('tour-next').hidden = outside;
+  $('doorway').hidden = sceneIndex !== 0 || !photoReady;
+
+  for (const id of ['enter-shop', 'exit-shop', 'tour-next', 'doorway']) {
+    $(id).disabled = photoBusy;
+  }
+
+  $('hotspots').querySelectorAll('button').forEach(button => {
+    button.disabled = photoBusy;
+  });
+
+  $('photo-area').setAttribute('aria-busy', String(photoBusy));
+}
+
+// 切换照片或浏览模式时，取消旧动画并使旧加载结果失效。
+function cancelPhotoNavigation() {
+  ++photoToken;
+
+  if (photoAnimation) {
+    photoAnimation.cancel();
+    photoAnimation = null;
+  }
+
+  photoBusy = false;
+  $('tour-status').textContent = '';
+  updateTour();
+}
+
+function loadPhoto(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    let settled = false;
+
+    const finish = ok => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      img.onload = img.onerror = null;
+
+      if (ok) {
+        resolve(img);
+      } else {
+        reject(new Error(
+          '无法加载 ' + file +
+          '，请确认图片与 index.html 在同一文件夹。'
+        ));
+      }
+    };
+
+    const timer = setTimeout(() => finish(false), 12000);
+    img.onload = () => finish(true);
+    img.onerror = () => finish(false);
+    img.src = file;
+
+    if (img.complete && img.naturalWidth) finish(true);
+  });
+}
+
+async function selectScene(index, walk = false) {
+  if (!SCENES[index]) return;
+
+  cancelPhotoNavigation();
+
+  const token = photoToken;
+  const scene = SCENES[index];
+
+  photoBusy = true;
+  updateTour();
+  $('photo-error').hidden = true;
+  $('tour-status').textContent = walk
+    ? '正在前往' + scene.name + '…'
+    : '正在加载' + scene.name + '…';
+
+  try {
+    // 目标照片成功加载后再切换；失败时保留当前视点。
+    const incoming = await loadPhoto(scene.file);
+    if (token !== photoToken) return;
+
+    const sheet = $('photo-sheet');
+    const motion =
+      walk &&
+      photoReady &&
+      !matchMedia('(prefers-reduced-motion: reduce)').matches &&
+      !!sheet.animate;
+
+    // 朝门口推进并淡出，营造从门外进入店铺的过渡。
+    if (motion) {
+      sheet.style.transformOrigin =
+        sceneIndex === 0 ? '78% 85%' : '50% 50%';
+
+      photoAnimation = sheet.animate([
+        {
+          transform: 'translate(-50%,-50%) scale(1)',
+          opacity: 1
+        },
+        {
+          transform: 'translate(-50%,-50%) scale(1.6)',
+          opacity: 0
+        }
+      ], {
+        duration: 420,
+        easing: 'ease-in',
+        fill: 'forwards'
+      });
+
+      await photoAnimation.finished;
+      if (token !== photoToken) return;
+
+      photoAnimation.cancel();
+      photoAnimation = null;
+    }
+
+    incoming.id = 'scene-photo';
+    incoming.alt = '慕名而来 · ' + scene.name;
+    incoming.draggable = false;
+    $('scene-photo').replaceWith(incoming);
+
+    sceneIndex = index;
+    photoReady = true;
+
+    fitPhoto();
+    drawHotspots();
+    sheet.style.visibility = 'visible';
+    sheet.style.transformOrigin = '50% 50%';
+
+    $('scene-name').textContent = scene.name;
+    $('scene-count').textContent =
+      String(index + 1).padStart(2, '0') + ' / ' +
+      String(SCENES.length).padStart(2, '0') + ' · ' +
+      scene.spots.length + ' 个热点';
+
+    [...$('thumbnails').children].forEach((button, i) => {
+      button.setAttribute('aria-pressed', String(i === index));
+    });
+
+    if (motion) {
+      photoAnimation = sheet.animate([
+        {
+          transform: 'translate(-50%,-50%) scale(1.08)',
+          opacity: 0
+        },
+        {
+          transform: 'translate(-50%,-50%) scale(1)',
+          opacity: 1
+        }
+      ], {
+        duration: 320,
+        easing: 'ease-out'
+      });
+
+      await photoAnimation.finished;
+      if (token !== photoToken) return;
+      photoAnimation = null;
+    }
+
+    $('tour-status').textContent = index < 2
+      ? '欢迎光临，点击「进入店铺」开始逛店。'
+      : '已到达' + scene.name + '，点击光点查看商品。';
+
+  } catch (error) {
+    if (token !== photoToken) return;
+
+    $('tour-status').textContent = error.message;
+
+    if (!photoReady) {
+      $('photo-error').hidden = false;
+      $('photo-error').textContent = error.message;
+    }
+
+  } finally {
+    if (token === photoToken) {
+      if (photoAnimation) {
+        photoAnimation.cancel();
+        photoAnimation = null;
+      }
+
+      photoBusy = false;
+      updateTour();
+
+      if (
+        walk &&
+        photoReady &&
+        !document.querySelector('dialog[open]')
+      ) {
+        $(sceneIndex < 2 ? 'enter-shop' : 'tour-next')
+          .focus({ preventScroll: true });
+      }
+    }
+  }
+}
+
+$('enter-shop').onclick = $('doorway').onclick =
+  () => selectScene(3, true);
+
+$('exit-shop').onclick = () => selectScene(0, true);
+
+$('tour-next').onclick = () => {
+  const route = [3, 2, 4, 5, 6];
+  selectScene(route[(route.indexOf(sceneIndex) + 1) % route.length], true);
+};
+
+$('enter-gallery').onclick = () => changeMode('gallery');
+
+$('back-to-store').onclick = () => {
+  changeMode('photo');
+  selectScene(3);
+};
+
+SCENES.forEach((scene, index) => {
+  const button = el('button', 'thumbnail');
+  const img = el('img');
+
+  img.src = scene.file;
+  img.alt = '';
+  img.loading = 'lazy';
+
+  button.setAttribute('aria-label', '查看' + scene.name);
+  button.append(img, el('span', '', scene.name));
+  button.onclick = () => selectScene(index);
+
+  $('thumbnails').append(button);
+});
+
+new ResizeObserver(fitPhoto).observe($('photo-area'));
+
+// 04. 统一商品库：统计、热销排行、实景热点和 3D 展厅共用数据。
+function setStatus(text, error = false) {
+  $('status').textContent = text;
+  $('status').classList.toggle('error', error);
+}
+
+function applyProducts(next, label) {
+  products = next;
+  source = label;
+  productMap = new Map(products.map(product => [product.id, product]));
+
+  ranked = [...products].sort((a, b) => b.sales - a.sales);
+  ranked.forEach((product, index) => {
+    product.rank = index + 1;
+  });
+
+  $('total-products').textContent = products.length;
+  $('total-sales').textContent = products
+    .reduce((sum, product) => sum + product.sales, 0)
+    .toLocaleString('zh-CN');
+
+  // 按“分”计算金额，减少小数运算误差。
+  $('total-revenue').textContent = money(
+    products.reduce(
+      (sum, product) =>
+        sum + Math.round(product.price * 100) * product.sales,
+      0
+    ) / 100
+  );
+
+  $('ranking').replaceChildren();
+
+  ranked
+    .filter(product => product.sales > 0)
+    .slice(0, 5)
+    .forEach((product, index) => {
+      const item = el('li');
+      const button = el('button', 'rank-item');
+
+      button.append(
+        el('em', '', String(index + 1).padStart(2, '0')),
+        el('span', '', product.name),
+        el('small', '', product.sales + ' 件')
+      );
+
+      button.onclick = () => showDetail(product);
+      item.append(button);
+      $('ranking').append(item);
+    });
+
+  if (!$('ranking').children.length) {
+    $('ranking').append(el('li', 'muted', '暂无销售记录'));
+  }
+
+  if (detail.open) detail.close();
+
+  drawHotspots();
+  gallery?.rebuild();
+}
+
+// 验证整份数据后才应用，格式错误不会覆盖现有商品。
+function validateData(raw) {
+  const rows = Array.isArray(raw) ? raw : raw?.products;
+
+  if (!Array.isArray(rows)) {
+    throw new Error('需要商品数组或包含 products 数组的对象。');
+  }
+
+  if (rows.length > 1000) {
+    throw new Error('最多支持 1,000 款商品。');
+  }
+
+  const ids = new Set();
+  let sumCents = 0;
+  let sumSales = 0;
+
+  return rows.map((row, index) => {
+    const fail = message => {
+      throw new Error('第 ' + (index + 1) + ' 款：' + message);
+    };
+
+    if (!row || typeof row !== 'object' || Array.isArray(row)) {
+      fail('商品格式不正确。');
+    }
+
+    for (const key of ['id', 'name']) {
+      if (
+        typeof row[key] !== 'string' ||
+        !row[key].trim() ||
+        row[key].length > 120
+      ) {
+        fail(key + ' 须为 1～120 字符的文本。');
+      }
+    }
+
+    const id = row.id.trim();
+
+    if (ids.has(id)) fail('商品编号重复：' + id);
+    ids.add(id);
+
+    for (const key of ['price', 'stock', 'sales']) {
+      if (
+        typeof row[key] !== 'number' ||
+        !Number.isFinite(row[key]) ||
+        row[key] < 0
+      ) {
+        fail(key + ' 须为非负数字。');
+      }
+
+      if (key !== 'price' && !Number.isSafeInteger(row[key])) {
+        fail(key + ' 须为安全范围内的整数。');
+      }
+    }
+
+    const cents = Math.round(row.price * 100);
+
+    if (
+      !Number.isSafeInteger(cents) ||
+      Math.abs(row.price * 100 - cents) > .000001
+    ) {
+      fail('价格最多两位小数。');
+    }
+
+    sumCents += cents * row.sales;
+    sumSales += row.sales;
+
+    if (
+      !Number.isSafeInteger(cents * row.sales) ||
+      !Number.isSafeInteger(sumCents) ||
+      !Number.isSafeInteger(sumSales)
+    ) {
+      fail('数据超出安全计算范围。');
+    }
+
+    for (const key of ['category', 'description', 'desc', 'image']) {
+      if (
+        row[key] !== undefined &&
+        (typeof row[key] !== 'string' || row[key].length > 2000)
+      ) {
+        fail(key + ' 须为不超过 2,000 字符的文本。');
+      }
+    }
+
+    const reference = DEMO.find(product => product.id === id);
+    const image =
+      row.image?.trim() || reference?.image || FILES.earrings;
+    const crop =
+      row.image?.trim() ? null : reference?.crop || null;
+
+    // 图片使用普通文件路径或网络地址，不接受内嵌 data 图片。
+    try {
+      if (!['file:', 'http:', 'https:'].includes(
+        new URL(image, location.href).protocol
+      )) {
+        fail('image 请使用图片文件名或 HTTP/HTTPS 地址。');
+      }
+    } catch {
+      fail('image 图片地址无效。');
+    }
+
+    return {
+      id,
+      name: row.name.trim(),
+      category: row.category?.trim() || '精选饰品',
+      price: cents / 100,
+      stock: row.stock,
+      sales: row.sales,
+      desc:
+        row.description?.trim() ||
+        row.desc?.trim() ||
+        '用一点细节，装点喜欢的日常。',
+      image,
+      crop
+    };
+  });
+}
+
+$('import-button').onclick = () => $('json-file').click();
+
+$('json-file').onchange = async event => {
+  const file = event.target.files[0];
+  event.target.value = '';
+
+  if (!file || importing) return;
+
+  importing = true;
+  $('import-button').disabled = true;
+
+  try {
+    if (file.size > 5 * 1024 * 1024) {
+      throw new Error('请选择不超过 5 MB 的 JSON 文件。');
+    }
+
+    let raw;
+
+    try {
+      raw = JSON.parse((await file.text()).replace(/^\uFEFF/, ''));
+    } catch {
+      throw new Error('JSON 格式错误，请检查逗号和双引号。');
+    }
+
+    const next = validateData(raw);
+    applyProducts(next, file.name);
+
+    setStatus(
+      '已导入 ' + file.name + '，共 ' + next.length +
+      ' 款。统计、热销排行及相同编号的热点已更新。刷新页面恢复示例。'
+    );
+
+  } catch (error) {
+    setStatus('导入失败：' + error.message + ' 当前数据未更改。', true);
+
+  } finally {
+    importing = false;
+    $('import-button').disabled = false;
+  }
+};
+
+// 05. 模式切换。使用原生 CSS 3D，不依赖 CDN 或本地服务器。
+function changeMode(next) {
+  cancelPhotoNavigation();
+
+  mode = next;
+  $('photo-view').hidden = next !== 'photo';
+  $('gallery-view').hidden = next !== 'gallery';
+
+  $('photo-mode').setAttribute('aria-pressed', String(next === 'photo'));
+  $('gallery-mode').setAttribute('aria-pressed', String(next === 'gallery'));
+
+  $('view-title').textContent = next === 'photo'
+    ? '走进店里，遇见心动。'
+    : '在光影之间，慢慢挑选。';
+
+  $('view-description').textContent = next === 'photo'
+    ? '七个实拍视角 · 从门口走进来，发现喜欢的饰品'
+    : '拖动看向，WASD 漫游 · 热销饰品优先陈列';
+
+  if (next === 'photo') {
+    fitPhoto();
+    if (!photoReady) selectScene(sceneIndex);
+  }
+
+  gallery?.activate();
+}
+
+$('photo-mode').onclick = () => changeMode('photo');
+$('gallery-mode').onclick = () => changeMode('gallery');
+
+$('stats-button').onclick = () => {
+  const open = $('layout').classList.toggle('show-stats');
+  $('stats-button').setAttribute('aria-expanded', String(open));
+};
+
+// 06. 原生 CSS 3D 相机。
+// 通过世界的逆变换实现第一人称移动，只在操作或尺寸变化时更新。
+function createGallery() {
+  const stage = $('gallery-stage');
+  const host = $('renderer-host');
+  const world = el('div', 'gallery-world');
+  const camera = { x: 0, y: 235, z: 1200 };
+
+  host.className = 'gallery-camera';
+  host.replaceChildren(world);
+
+  const keys = new Set();
+  const touchKeys = new Map();
+
+  let objects = [];
+  let group = 0;
+  let startZ = 1200;
+  let yaw = 0;
+  let pitch = 0;
+  let frame = 0;
+  let lastTime = 0;
+  let pointer = null;
+  let suppressClick = 0;
+  let compact = false;
+  let focal = 600;
+
+  function panel(
+    className, width, height, x, y, z,
+    rx = 0, ry = 0, text = ''
+  ) {
+    const node = el('div', 'room-panel ' + className, text);
+
+    node.style.width = width + 'px';
+    node.style.height = height + 'px';
+    node.style.transform =
+      `translate3d(${x}px,${-y}px,${z}px) ` +
+      `translate(-50%,-50%) rotateX(${-rx}rad) rotateY(${ry}rad)`;
+
+    node.setAttribute('aria-hidden', 'true');
+    world.append(node);
+  }
+
+  // 用简单平面组成展厅，减少渲染负担。
+  panel('room-floor', 1900, 5500, 0, -70, 250, -Math.PI / 2);
+  panel('room-wall', 1900, 1000, 0, 430, -2400, 0, 0, 'MUMING ERLAI');
+  panel('room-wall', 1900, 1000, 0, 430, 3000, 0, Math.PI, '慕名而来');
+  panel('room-wall room-side', 5500, 1000, -950, 430, 250, 0, Math.PI / 2);
+  panel('room-wall room-side', 5500, 1000, 950, 430, 250, 0, -Math.PI / 2);
+
+  function stop() {
+    keys.clear();
+    touchKeys.clear();
+
+    if (pointer && stage.hasPointerCapture(pointer.id)) {
+      stage.releasePointerCapture(pointer.id);
+    }
+
+    pointer = null;
+    lastTime = 0;
+    stage.classList.remove('is-dragging');
+  }
+
+  function invalidate() {
+    if (!frame && mode === 'gallery' && !document.hidden) {
+      frame = requestAnimationFrame(render);
+    }
+  }
+
+  function reset() {
+    stop();
+    yaw = 0;
+    pitch = -.035;
+    camera.x = 0;
+    camera.y = 235;
+    camera.z = startZ;
+    invalidate();
+  }
+
+  function positionCards() {
+    const cols = Math.min(compact ? 2 : 3, Math.max(1, objects.length));
+    const order = cols === 3
+      ? [1, 0, 2, 4, 3, 5]
+      : [0, 1, 2, 3, 4, 5];
+
+    objects.forEach((object, index) => {
+      const slot = order[index];
+      const col = slot % cols;
+      const row = Math.floor(slot / cols);
+
+      const centered =
+        objects.length === 1 ||
+        (
+          cols === 2 &&
+          index === objects.length - 1 &&
+          objects.length % 2 === 1
+        );
+
+      const x = centered ? 0 : (col - (cols - 1) / 2) * 390;
+      const z = -row * 650 - (index % cols) * 35;
+
+      object.style.transform =
+        `translate3d(${x}px,-190px,${z}px) translate(-50%,-50%)`;
+    });
+  }
+
+  function resize() {
+    if (!stage.clientWidth || !stage.clientHeight) return;
+
+    const previous = compact;
+    compact = stage.clientWidth < 620;
+
+    const aspect = stage.clientWidth / stage.clientHeight;
+    const tan = Math.tan(25 * Math.PI / 180);
+
+    focal = stage.clientHeight / (2 * tan);
+    host.style.perspective = focal + 'px';
+
+    positionCards();
+
+    const columns = Math.min(
+      compact ? 2 : 3,
+      Math.max(1, objects.length)
+    );
+    const width = (columns - 1) * 390 + 310;
+
+    startZ = clamp(width / (2 * tan * aspect) + 180, 850, 2500);
+
+    if (previous !== compact) reset();
+    invalidate();
+  }
+
+  function build() {
+    stop();
+    objects.forEach(object => object.remove());
+    objects = [];
+
+    const count = Math.ceil(ranked.length / 6);
+    group = count ? ((group % count) + count) % count : 0;
+
+    ranked.slice(group * 6, group * 6 + 6).forEach(product => {
+      const wrapper = el('div', 'card-object');
+      const button = el('button', 'product-card');
+      const photo = picture(product);
+
+      button.type = 'button';
+      button.setAttribute(
+        'aria-label',
+        product.name + '，' + money(product.price) + '，查看详情'
+      );
+
+      if (product.sales > 0 && product.rank <= 5) {
+        photo.append(el('span', 'card-tag', '热销 TOP ' + product.rank));
+      }
+
+      const info = el('div', 'product-meta');
+      const bottom = el('div', 'product-bottom');
+
+      bottom.append(
+        el('strong', '', money(product.price)),
+        el('small', '', '已售 ' + product.sales + ' 件')
+      );
+
+      info.append(el('h3', '', product.name), bottom);
+      button.append(photo, info);
+
+      button.onclick = event => {
+        if (event.detail !== 0 && performance.now() < suppressClick) return;
+        showDetail(product);
+      };
+
+      wrapper.append(button);
+      world.append(wrapper);
+      objects.push(wrapper);
+    });
+
+    $('group-label').textContent = count
+      ? '第 ' + (group + 1) + ' / ' + count + ' 组 · 热销优先'
+      : '暂无商品';
+
+    $('previous-group').disabled = $('next-group').disabled = count < 2;
+    $('gallery-message').hidden = ranked.length > 0;
+
+    if (!ranked.length) {
+      $('gallery-message').textContent = '当前没有商品，请导入商品 JSON。';
+    }
+
+    resize();
+    reset();
+  }
+
+  function render(time) {
+    frame = 0;
+
+    if (mode !== 'gallery' || document.hidden) {
+      lastTime = 0;
+      return;
+    }
+
+    const dt = lastTime
+      ? Math.min((time - lastTime) / 1000, .05)
+      : .016;
+
+    lastTime = time;
+
+    if (!document.querySelector('dialog[open]')) {
+      const active = new Set([...keys, ...touchKeys.values()]);
+
+      let forward =
+        (active.has('w') ? 1 : 0) -
+        (active.has('s') ? 1 : 0);
+
+      let side =
+        (active.has('d') ? 1 : 0) -
+        (active.has('a') ? 1 : 0);
+
+      // 斜向移动归一化，避免速度变快。
+      const length = Math.hypot(forward, side) || 1;
+      forward /= length;
+      side /= length;
+
+      // 按当前看向移动，并限制在展厅范围内。
+      camera.x = clamp(
+        camera.x +
+        (side * Math.cos(yaw) - forward * Math.sin(yaw)) * dt * 520,
+        -770,
+        770
+      );
+
+      camera.z = clamp(
+        camera.z -
+        (forward * Math.cos(yaw) + side * Math.sin(yaw)) * dt * 520,
+        -1950,
+        2750
+      );
+    }
+
+    // CSS 的 Y 轴向下；焦距平移让场景以相机位置为透视中心。
+    world.style.transform =
+      `translateZ(${focal}px) ` +
+      `rotateX(${pitch}rad) rotateY(${-yaw}rad) ` +
+      `translate3d(${-camera.x}px,${camera.y}px,${-camera.z}px)`;
+
+    if (keys.size || touchKeys.size) {
+      invalidate();
+    } else {
+      lastTime = 0;
+    }
+  }
+
+  stage.addEventListener('dragstart', event => event.preventDefault());
+
+  stage.addEventListener('pointerdown', event => {
+    if (
+      pointer ||
+      event.button !== 0 ||
+      event.target.closest('.gallery-ui,.gallery-message')
+    ) return;
+
+    stage.focus({ preventScroll: true });
+
+    pointer = {
+      id: event.pointerId,
+      x: event.clientX,
+      y: event.clientY,
+      yaw,
+      pitch,
+      moved: false
+    };
+  });
+
+  window.addEventListener('pointermove', event => {
+    if (!pointer || pointer.id !== event.pointerId) return;
+
+    const dx = event.clientX - pointer.x;
+    const dy = event.clientY - pointer.y;
+
+    if (Math.hypot(dx, dy) > 6 && !pointer.moved) {
+      pointer.moved = true;
+      stage.setPointerCapture(event.pointerId);
+      stage.classList.add('is-dragging');
+    }
+
+    if (pointer.moved) {
+      yaw = pointer.yaw - dx * .003;
+      pitch = clamp(pointer.pitch - dy * .003, -.65, .65);
+      invalidate();
+    }
+  });
+
+  function release(event) {
+    touchKeys.delete(event.pointerId);
+
+    if (!pointer || pointer.id !== event.pointerId) return;
+
+    // 拖拽完成后短暂忽略点击，避免误开商品详情。
+    if (pointer.moved) suppressClick = performance.now() + 400;
+
+    if (stage.hasPointerCapture(event.pointerId)) {
+      stage.releasePointerCapture(event.pointerId);
+    }
+
+    pointer = null;
+    stage.classList.remove('is-dragging');
+  }
+
+  window.addEventListener('pointerup', release);
+  window.addEventListener('pointercancel', release);
+
+  stage.addEventListener('lostpointercapture', () => {
+    pointer = null;
+    stage.classList.remove('is-dragging');
+  });
+
+  document.addEventListener('keydown', event => {
+    const key = event.key.toLowerCase();
+
+    if (
+      mode !== 'gallery' ||
+      !['w', 'a', 's', 'd'].includes(key) ||
+      document.querySelector('dialog[open]') ||
+      event.ctrlKey ||
+      event.metaKey ||
+      event.altKey
+    ) return;
+
+    if (event.target.closest(
+      'input,textarea,select,[contenteditable="true"]'
+    )) return;
+
+    event.preventDefault();
+    keys.add(key);
+    invalidate();
+  });
+
+  document.addEventListener('keyup', event => {
+    keys.delete(event.key.toLowerCase());
+  });
+
+  // 手机与平板长按方向按钮移动，支持同时按两个方向。
+  document.querySelectorAll('[data-key]').forEach(button => {
+    button.addEventListener('pointerdown', event => {
+      if (
+        mode !== 'gallery' ||
+        document.querySelector('dialog[open]')
+      ) return;
+
+      event.preventDefault();
+      button.setPointerCapture(event.pointerId);
+      touchKeys.set(event.pointerId, button.dataset.key);
+      invalidate();
+    });
+
+    button.addEventListener('lostpointercapture', event => {
+      touchKeys.delete(event.pointerId);
+    });
+  });
+
+  // 失焦、隐藏页面、打开弹窗时停止移动，避免按键状态残留。
+  window.addEventListener('blur', stop);
+
+  document.addEventListener('visibilitychange', () => {
+    stop();
+    if (!document.hidden) invalidate();
+  });
+
+  const observer = new MutationObserver(() => {
+    if (document.querySelector('dialog[open]')) stop();
+  });
+
+  [detail, help].forEach(dialog => {
+    observer.observe(dialog, {
+      attributes: true,
+      attributeFilter: ['open']
+    });
+  });
+
+  $('previous-group').onclick = () => {
+    group--;
+    build();
+  };
+
+  $('next-group').onclick = () => {
+    group++;
+    build();
+  };
+
+  $('reset-camera').onclick = reset;
+
+  new ResizeObserver(resize).observe(stage);
+
+  build();
+
+  return {
+    rebuild() {
+      group = 0;
+      build();
+    },
+    activate() {
+      stop();
+
+      if (mode === 'gallery') {
+        resize();
+        reset();
+      }
+    }
+  };
+}
+
+// 07. 初始化。所有数据只保存在当前页面内存中。
+applyProducts(DEMO.map(product => ({ ...product })), '内置示例');
+selectScene(0);
+gallery = createGallery();
+</script>
+</body>
+</html>
